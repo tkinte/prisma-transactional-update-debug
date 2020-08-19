@@ -8,7 +8,7 @@ https://github.com/prisma/prisma/issues/3244
 > Prepopulated sqliteDB. Do not run migrate
 
 ## How to:
-> 1. clone de repo
+> 1. clone the repo
 > 2. Run npm install @prisma/cli --save-dev
 > 3. Run npm install @prisma/client
 > 4. Run npx prisma generate
