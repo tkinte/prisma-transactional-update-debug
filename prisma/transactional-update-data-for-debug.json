@@ -1,0 +1,282 @@
+[
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": "clean_demo_v4_with_v505EUP_Class4"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": "clean_demo_v4_with_v505EUP_Class5"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":CONSTRAINTS"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":DEFAULTS"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":DOCUMENTATION-IN-FRAME"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":INVERSE"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":MAXIMUM-CARDINALITY"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":MINIMUM-CARDINALITY"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":NUMERIC-MAXIMUM"
+        }
+    },
+    {
+        "data": {
+            "type": {
+                "connect": {
+                    "name": ":STANDARD-FACET"
+                }
+            },
+            "supertype": {
+                "connect": [
+                    {
+                        "name": ":FACET"
+                    },
+                    {
+                        "name": ":META-CLASS"
+                    },
+                    {
+                        "name": ":SYSTEM-CLASS"
+                    },
+                    {
+                        "name": ":THING"
+                    }
+                ]
+            }
+        },
+        "where": {
+            "name": ":NUMERIC-MINIMUM"
+        }
+    }
+]

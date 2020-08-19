@@ -1,0 +1,219 @@
+// 1
+datasource db {
+  provider = "sqlite"
+  //url      = "file:./essential-dev.db"
+  url      = "file:./demorepo-dev.db"
+}
+
+// 2
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["connectOrCreate", "transactionApi", "distinct"]
+  //experimentalFeatures = ["transactionApi"]
+}
+
+// knowledge_base > simple_instance
+model SimpleInstance {
+  //knowledge_base > simple_instance > name
+  name                String         @id
+  // knowledge_base > simple_instance > own_slot_value
+  own_slot_value      OwnSlotValue[]
+  // knowledge_base > simple_instance > type
+  type                Class?         @relation(fields: [typeName], references: [name])
+  // knowledge_base > simple_instance > type
+  typeName            String?
+  // knowledge_base > simple_instance > supertype
+  supertype           Class[]        @relation("SimpleInstanceToSupertype", references: [name])
+  //knowledge_base >
+  knowledgeBase       KnowledgeBase? @relation(fields: [knowledgeBaseTstamp], references: [timestamp])
+  // knowledge_base > timestamp
+  knowledgeBaseTstamp String?
+  // knowledge_base > class|slot|simple_instance > own_slot_value > value
+  // value pointing to this simple_instance
+  value               Value[]
+}
+
+// knowledge_base > slot
+model Slot {
+  // knowledge_base > slot > name
+  name                   String               @id
+  // knowledge_base > slot > type
+  type                   Class?               @relation(fields: [typeName], references: [name])
+  // knowledge_base > slot > type
+  typeName               String?
+  // knowledge_base > slot > supertype
+  supertype              Class[]              @relation("SlotToSupertype", references: [name])
+  // knowledge_base > slot > own_slot_value
+  ownSlotValue           OwnSlotValue[]
+  // knowledge_base > slot > own_slot_value > slot_reference
+  ownSlotValueTargetSlot OwnSlotValue[]       @relation("OwnSlotValueToTargetSlot")
+  // knowledge_base > class > template_slot
+  templateSlotForClass   Class[]              @relation("TemplateSlotToSlot")
+  // knowledge_base > class > template_facet_value
+  templateFacetValue     TemplateFacetValue[]
+  // knowledge_base
+  knowledgeBase          KnowledgeBase?       @relation(fields: [knowledgeBaseTstamp], references: [timestamp])
+  // knowledge_base > timestamp
+  knowledgeBaseTstamp    String?
+  // knowledge_base > class|slot|simple_instance > own_slot_value > value
+  // value pointing to this slot
+  value                  Value[]
+}
+
+// knowledge_base > facet
+model Facet {
+  // knowledge_base > facet > name
+  name                String               @id
+  // knowledge_base > facet > type
+  type                Class?               @relation(fields: [typeClassName], references: [name])
+  typeClassName       String?
+  // knowledge_base > facet > supertype
+  supertype           Class[]              @relation("FacetToSupertype", references: [name])
+  // knowledge_base
+  knowledgeBase       KnowledgeBase?       @relation(fields: [knowledgeBaseTstamp], references: [timestamp])
+  // knowledge_base > timestamp
+  knowledgeBaseTstamp String? // knowledge_base > timestamp
+  // knowledge_base > class > template_facet_value
+  templateFacetValue  TemplateFacetValue[]
+}
+
+// knowledge_base > class > template_facet_value
+model TemplateFacetValue {
+  clsName_slotRef_facRef String  @id
+  // knowledge_base > class > template_facet_value > slot_reference
+  slot                   Slot    @relation(fields: [slotReference], references: [name])
+  slotReference          String
+  // knowledge_base > class > template_facet_value > facet_reference
+  facet                  Facet   @relation(fields: [facetReference], references: [name])
+  facetReference         String
+  // knowledge_base > class > template_facet_value > value
+  value                  Value[]
+  // knowledge_base > class
+  class                  Class   @relation(fields: [className], references: [name])
+  className              String
+}
+
+// knowledge_base > class > own_slot_value
+// knowledge_base > slot > own_slot_value
+// knowledge_base > simple_instance > own_slot_value
+model OwnSlotValue {
+  ownerName_slotRef  String          @id
+  // ... > own_slot_value > value
+  value              Value[] //@relation(references: [type_value])
+  // ... > own_slot_value > slot_reference
+  targetSlot         Slot            @relation("OwnSlotValueToTargetSlot", fields: [targetSlotName], references: [name])
+  targetSlotName     String
+  // knowledge_base > class > own_slot_value
+  class              Class?          @relation(fields: [className], references: [name])
+  className          String?
+  // knowledge_base > slot > own_slot_value
+  slot               Slot?           @relation(fields: [slotName], references: [name])
+  slotName           String?
+  // knowledge_base > simple_instance > own_slot_value
+  simpleInstance     SimpleInstance? @relation(fields: [simpleInstanceName], references: [name])
+  simpleInstanceName String?
+}
+
+// knowledge_base > class > own_slot_value > value
+// knowledge_base > class > template_facet_value > value
+// knowledge_base > slot > own_slot_value > value
+// knowledge_base > simple_instance > own_slot_value > value
+model Value {
+  type_value String @id
+  @@unique([type, value])
+  // ... > own_slot_value > value > CDATA
+  value              String
+  // ... > own_slot_value > value @value_type
+  type               String
+  // knowledge_base > class > template_facet_value
+  templateFacetValue TemplateFacetValue[]
+  // knowledge_base > class > own_slot_value > value
+  // knowledge_base > slot > own_slot_value > value
+  // knowledge_base > simple_instance > own_slot_value > value
+  ownSlotValue       OwnSlotValue[] //@relation(references: [ownerName_slotRef])
+  //@@map("ValueType")
+  class              Class?               @relation(fields: [className], references: [name])
+  className          String?
+  slot               Slot?                @relation(fields: [slotName], references: [name])
+  slotName           String?
+  simpleInstance     SimpleInstance?      @relation(fields: [simpleInstanceName], references: [name])
+  simpleInstanceName String?
+}
+
+// knowledge_base > class
+model Class {
+  // knowledge_base > class > name
+  name                     String               @id // name of this class
+  // knowledge_base > class > type (type of the current class)
+  type                     Class?               @relation(fields: [typeName], references: [name]) // class which is the type of this class
+  typeName                 String? // the name of the class which is the type this class 
+  // knowledge_base > class > type ()
+  //classWithThisAsType      Class[]              @relation("ClassToType") // which class has this class as the type
+  // knowledge_base > class > type (inverse of : all declaring this class as class)
+  //classUsedAsType          Class[]              @relation("ClassToType") // which class has this class as the type
+  // knowledge_base > class > supertype
+  supertype                Class[]              @relation("ClassToSupertype", references: [name]) // supertype of this class
+  // knowledge_base > class > supertype (inverse of : all declaring this class as supertype)
+  subtype                  Class[]              @relation("ClassToSupertype", references: [name]) // other class declaring this class as supertype
+  // knowledge_base > class
+  ownSlotValue             OwnSlotValue[]
+  // knowledge_base > class > superclass
+  superclass               Class[]              @relation("ClassToSuperclass", references: [name]) // superclass of this class
+  // knowledge_base > class > superclass (inverse of : all declaring this class as superclass)
+  subclass                 Class[]              @relation("ClassToSuperclass", references: [name]) // which class has this class as superclass
+  // knowledge_base > class > template_slot
+  templateSlot             Slot[]               @relation("TemplateSlotToSlot") // template_slot
+  // knowledge_base > class > template_facet_value
+  templateFacetValue       TemplateFacetValue[] // template_facet_value
+  // knowledge_base > facet > type
+  facetType                Facet[] // all facets with type = this class
+  // knowledge_base > facet > supertype
+  facetSupertypes          Facet[]              @relation("FacetToSupertype", references: [name]) // facet declaring this class as supertype  
+  // knowledge_base > slot > type
+  slot                     Slot[]
+  // knowledge_base > slot > supertype
+  slotSupertypes           Slot[]               @relation("SlotToSupertype", references: [name])
+  // knowledge_base > simple_instance > type
+  simpleInstance           SimpleInstance[] // all simple instances with type = this class
+  // knowledge_base > simple_instance > supertype
+  simpleInstanceSupertypes SimpleInstance[]     @relation("SimpleInstanceToSupertype", references: [name]) // simple_instance declaring this class as supertype
+  // knowledge_base
+  knowledgeBase            KnowledgeBase?       @relation(fields: [knowledgeBaseTstamp], references: [timestamp]) // Knowledge base related to
+  // knowledge_base > timestamp
+  knowledgeBaseTstamp      String? // knowledge_base > timestamp
+  class                    Class[]              @relation("ClassToClass")
+  // knowledge_base > class|slot|simple_instance > own_slot_value > value
+  // value pointing to this class
+  value                    Value[]
+}
+
+// knowledge_base attr:xmlns, xmlns:xsi, xsi:schemaLocation
+model Schema {
+  // knowledge_base attr:xmlns
+  xmlns          String
+  // knowledge_base attr:xmlns:xsi
+  xsi            String          @id
+  schemaLocation String // knowledge_base attr:xsi:schemaLocation
+  // knowledge_base
+  knowledgeBase  KnowledgeBase[] // knowledge_base
+}
+
+// knowledge_base
+model KnowledgeBase {
+  // knowledge_base attr:xmlns:xsi
+  schema         Schema?          @relation(fields: [xsiReference], references: [xsi])
+  // knowledge_base attr:xmlns:xsi
+  xsiReference   String? // Reference to the schema identifier
+  // Optional name of the knowledge base. Not defined in the ReportXML
+  name           String?
+  // knowledge_base > class
+  class          Class[] // All class in the knowlege base
+  // knowledge_base > slot
+  slot           Slot[] // All slot in the knowledge base
+  // knowledge_base > facet
+  facet          Facet[] // All facet in the knowledge base
+  // knowledge_base > simple_instance
+  simpleInstance SimpleInstance[] // All simple_instance in the knowledge base
+  // knowledge_base > timestamp
+  timestamp      String           @id // knowledge_base > timestamp
+}
